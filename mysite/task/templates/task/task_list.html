@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    tasks
+{% endblock %}
+
+{% block content %}
+    <!-- first div for form for a new task and second div to show existing tasks -->
+    <div class="col-8 mt-5">
+        <!-- form-inline to make the form inline,
+        justify-content-center to center the content,
+        mx-3 means margin x-axis 3 bootstrap space b/w elements -->
+        <form class="form-inline justify-content-center" method="POST" id="createTaskForm" data-url="{% url 'task_list' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mx-3">
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="button" class="btn btn-success" id="createButton">Create</button>
+        </form>
+    </div>
+    <div class="col-5 mt-5" id="taskList">
+        {% for task in tasks %}
+            <div class="card mb-2" id="taskCard" data-id="{{ task.id }}" style="{% if task.completed %}text-decoration: line-through{% endif %}">
+                <div class="card-body">
+                    {{  task.title }}
+                    <button type="button" class="close float-right" data-id="{{ task.id }}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
